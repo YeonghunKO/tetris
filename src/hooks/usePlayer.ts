@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { randomTetromino } from "../business/Tetrominoes";
+import { useCallback, useState } from "react";
+import { randomTetromino } from "@/business/Tetrominoes";
 
 interface BuildPlayerProp {
   className: string;
@@ -10,29 +10,25 @@ export interface IBuildPlayerReturn {
   collided: boolean;
   isFastDropping: boolean;
   position: { row: number; column: number };
-  tetrominoes: (BuildPlayerProp | undefined)[];
-  tetromino:
-    | {
-        shape: number[][];
-        className: string;
-      }
-    | undefined;
+  tetrominoes: BuildPlayerProp[];
+  tetromino: {
+    shape: number[][];
+    className: string;
+  };
 }
 
 type BuildPlayer = (prev?: BuildPlayerProp[]) => {
   collided: boolean;
   isFastDropping: boolean;
   position: { row: number; column: number };
-  tetrominoes: (BuildPlayerProp | undefined)[];
-  tetromino:
-    | {
-        shape: number[][];
-        className: string;
-      }
-    | undefined;
+  tetrominoes: BuildPlayerProp[];
+  tetromino: {
+    shape: number[][];
+    className: string;
+  };
 };
 
-const buildPlayer: BuildPlayer = (previous?: BuildPlayerProp[]) => {
+const buildPlayer = (previous?: BuildPlayerProp[]) => {
   let tetrominoes;
   if (previous) {
     tetrominoes = [...previous, tetrominoes];
