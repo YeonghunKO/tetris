@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { buildBoard, nextBoard } from "../business/Board";
+import { buildBoard, nextBoard } from "@/business/Board";
 
 interface UseBoardProps {
   rows: number;
@@ -28,4 +28,6 @@ export const useBoard = ({
       })
     );
   }, [player, resetPlayer, addLinesCleared]);
+
+  return [board];
 };
