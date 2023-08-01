@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Game } from "./components/Game";
-import { useGameOver } from "./hooks/useGameOver";
+import { Game } from "@/components/Tetris/Game/Game";
 
 function App() {
   return (

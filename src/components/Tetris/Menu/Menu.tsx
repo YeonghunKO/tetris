@@ -1,7 +1,6 @@
-import React from "react";
-import "./Mene.css";
+import "./Menu.css";
 
-export const Menu = ({ onClick }: { onClick: () => void }) => {
+const Menu = ({ onClick }: { onClick: () => void }) => {
   return (
     <div className="Menu">
       <button className="Button" onClick={onClick}>
@@ -10,3 +9,5 @@ export const Menu = ({ onClick }: { onClick: () => void }) => {
     </div>
   );
 };
+
+export default Menu;
