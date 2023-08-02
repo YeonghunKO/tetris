@@ -4,6 +4,7 @@ import { useGameStats } from "@/hooks/useGameStats";
 import { usePlayer } from "@/hooks/usePlayer";
 import { useBoard } from "@/hooks/useBoard";
 import Board from "@/components/Tetris/Board";
+import Previews from "./Previews";
 
 const Tetris = ({
   rows,
@@ -31,7 +32,7 @@ const Tetris = ({
   return (
     <div className="Tetris">
       <Board board={board} />
-      {/* <Preivews tetrominoes={player.tetrominoes}/> */}
+      <Previews tetrominoes={player.tetrominoes} />
     </div>
   );
 };
