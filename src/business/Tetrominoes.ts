@@ -85,8 +85,6 @@ export const transferToBoard = ({
   rows, // pass된 board를 뜻함.
   shape, // tetromino , 즉 블럭을 뜻함. rows(board)에 shape가 입혀짐
 }: TransferToBoardProps) => {
-  console.log("shape", shape);
-
   shape.forEach((row, y) => {
     row.forEach((cell, x) => {
       if (cell) {
