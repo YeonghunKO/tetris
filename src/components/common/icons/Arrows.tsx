@@ -46,6 +46,6 @@ const Arrows = ({
       </svg>
     ),
   };
-  return <div className="Arrow">{directions[direction]}</div>;
+  return <div className={`Arrow ${direction}`}>{directions[direction]}</div>;
 };
 export default Arrows;
