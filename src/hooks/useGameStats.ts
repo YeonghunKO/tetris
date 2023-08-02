@@ -1,5 +1,12 @@
 import { useCallback, useState } from "react";
 
+type IStats = {
+  level: number;
+  linesCompleted: number;
+  linesPerLevel: number;
+  points: number;
+};
+
 const buildGameState = () => ({
   level: 1,
   linesCompleted: 0,
@@ -40,3 +47,5 @@ export const useGameStats = () => {
 
   return [gameStats, addLinesCleared] as const;
 };
+
+export type { IStats };
