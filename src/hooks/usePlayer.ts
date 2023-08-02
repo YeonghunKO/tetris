@@ -11,25 +11,11 @@ export interface IBuildPlayerReturn {
   isFastDropping: boolean;
   position: { row: number; column: number };
   tetrominoes: BuildPlayerProp[];
-  tetromino: {
-    shape: number[][];
-    className: string;
-  };
+  tetromino: BuildPlayerProp;
 }
 
-type BuildPlayer = (prev?: BuildPlayerProp[]) => {
-  collided: boolean;
-  isFastDropping: boolean;
-  position: { row: number; column: number };
-  tetrominoes: BuildPlayerProp[];
-  tetromino: {
-    shape: number[][];
-    className: string;
-  };
-};
-
 const buildPlayer = (previous?: BuildPlayerProp[]) => {
-  let tetrominoes;
+  let tetrominoes: any;
   if (previous) {
     tetrominoes = [...previous, tetrominoes];
     tetrominoes.unshift(randomTetromino());
@@ -57,3 +43,5 @@ export const usePlayer = () => {
 
   return [player, setPlayer, resetPlayer] as const;
 };
+
+export type { BuildPlayerProp };
