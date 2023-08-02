@@ -7,7 +7,7 @@ const Stats = ({ gameStats }: { gameStats: IStats }) => {
   return (
     <ul className="GameStats">
       <li>레벨: {level}</li>
-      <li>다음레벨까지: {linesToLevel}</li>
+      <li>다음레벨까지: {linesToLevel}줄</li>
       <li>점수: {points}</li>
     </ul>
   );
