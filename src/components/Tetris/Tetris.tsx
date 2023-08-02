@@ -34,10 +34,14 @@ const Tetris = ({
   return (
     <div className="Tetris">
       <Board board={board} />
-      <div>
-        <Previews tetrominoes={player.tetrominoes} />
-        <GameStats gameStats={gameStats} />
-        <ArrowKeys />
+      <div className="SideBar">
+        <div>
+          <Previews tetrominoes={player.tetrominoes} />
+          <GameStats gameStats={gameStats} />
+        </div>
+        <div>
+          <ArrowKeys />
+        </div>
       </div>
     </div>
   );
