@@ -1,5 +1,5 @@
 .Board {
-  margin: 2em auto;
+  margin: 10px 10vw;
   display: grid;
   grid-gap: 2px;
   width: 45vw;
