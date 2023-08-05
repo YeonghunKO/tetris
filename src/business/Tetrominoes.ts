@@ -105,11 +105,12 @@ export const randomTetromino = () => {
 
 // 넘겨받은 rows(board) 에 shape(블록)를 새겨넣는 일
 // shape에서 1로 표시된 부분이 {occupied , className}으로 변환됨
-// 단 position = {row,column} 이 설정되어있으면 shape 에서 1의 위치가 변경됨
+// 단 position = {row,column} 이 설정되어있으면 shape 에서 1로 표시된 부분이 row , column 만큼 증가하여 board에 적용
+// 즉 position 만큼 shape가 board에서 이동한다고 보면 됨.
 
 export const transferToBoard = ({
   className, // shape에서 1로 표되는 부분만 className이 지정됨
-  isOccupied, //
+  isOccupied, // ghost인지 아닌지 판별. ghost이거나 아무것도 없을때는 false, 블록이 자리잡으면 true
   position, // shape에서 position만큼 이동시킴, 예를 들어 shape에서 0,0 지점이 1이었다면 position = {row:1,column:1} 라면 1,1지점에 1로 지정됨
   rows, // pass된 board를 뜻함.
   shape, // tetromino , 즉 블럭을 뜻함. rows(board)에 shape가 입혀짐
