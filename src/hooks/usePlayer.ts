@@ -15,10 +15,12 @@ export interface IBuildPlayerReturn {
   tetromino: BuildPlayerProp;
 }
 
-const buildPlayer = (previous?: BuildPlayerProp[]) => {
+const buildPlayer = (previous?: IBuildPlayerReturn) => {
+  console.log("previous", previous);
+
   let tetrominoes: any;
   if (previous) {
-    tetrominoes = [...previous, tetrominoes];
+    tetrominoes = [...previous.tetrominoes];
     tetrominoes.unshift(randomTetromino());
   } else {
     tetrominoes = Array(5)
