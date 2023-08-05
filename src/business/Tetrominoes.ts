@@ -17,6 +17,7 @@ export const TETROMINOES = {
       [0, 1, 0, 0],
     ],
     className: `${className} ${className}__i`,
+    shapeRowLength: 4,
   },
   J: {
     shape: [
@@ -25,6 +26,7 @@ export const TETROMINOES = {
       [1, 1, 0],
     ],
     className: `${className} ${className}__j`,
+    shapeRowLength: 3,
   },
   L: {
     shape: [
@@ -33,6 +35,7 @@ export const TETROMINOES = {
       [0, 1, 1],
     ],
     className: `${className} ${className}__l`,
+    shapeRowLength: 3,
   },
   O: {
     shape: [
@@ -40,6 +43,7 @@ export const TETROMINOES = {
       [1, 1],
     ],
     className: `${className} ${className}__o`,
+    shapeRowLength: 2,
   },
   S: {
     shape: [
@@ -48,6 +52,7 @@ export const TETROMINOES = {
       [0, 0, 0],
     ],
     className: `${className} ${className}__s`,
+    shapeRowLength: 2,
   },
   T: {
     shape: [
@@ -56,6 +61,7 @@ export const TETROMINOES = {
       [0, 0, 0],
     ],
     className: `${className} ${className}__t`,
+    shapeRowLength: 2,
   },
   Z: {
     shape: [
@@ -64,6 +70,7 @@ export const TETROMINOES = {
       [0, 0, 0],
     ],
     className: `${className} ${className}__z`,
+    shapeRowLength: 2,
   },
 };
 

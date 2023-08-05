@@ -4,6 +4,7 @@ import { randomTetromino } from "@/business/Tetrominoes";
 interface BuildPlayerProp {
   className: string;
   shape: number[][];
+  shapeRowLength: number;
 }
 
 export interface IBuildPlayerReturn {
