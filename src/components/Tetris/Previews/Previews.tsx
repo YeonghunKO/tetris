@@ -10,8 +10,6 @@ interface IPreviews {
 const Previews = ({ tetrominoes }: IPreviews) => {
   const previewTetrominoes = tetrominoes.slice(1 - tetrominoes.length);
 
-  console.log("previewTetrominoes", previewTetrominoes);
-
   return (
     <div className="Previews">
       {previewTetrominoes.map((tetromino, index) => (

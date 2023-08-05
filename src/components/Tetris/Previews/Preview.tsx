@@ -12,9 +12,6 @@ export const Preview = ({ index, tetromino }: IPreview) => {
   const { className, shape } = tetromino;
   const board = buildBoard({ rows: 4, columns: 4 });
 
-  // console.log("className", className);
-  // console.log("board", board);
-
   board.rows = transferToBoard({
     className,
     isOccupied: false,
@@ -22,8 +19,6 @@ export const Preview = ({ index, tetromino }: IPreview) => {
     rows: board.rows,
     shape,
   });
-
-  console.log("board", board);
 
   return (
     <div className="Preview">
