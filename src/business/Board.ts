@@ -30,8 +30,7 @@ export const isWithinBoard = ({ board, position, shape }: ICheckValid) => {
     for (let x = 0; x < shape[y].length; x++) {
       if (shape[y][x]) {
         const column = x + position.column;
-        const isValidPosition = board.rows[row] && board.rows[column];
-        // console.log("row, column", `${board.rows[row]}, ${board.rows[column]}`);
+        const isValidPosition = board.rows[row] && board.rows[row][column];
 
         if (!isValidPosition) {
           return false;
@@ -44,20 +43,23 @@ export const isWithinBoard = ({ board, position, shape }: ICheckValid) => {
 
 // shape 가장자리로 부터 1 떨어져있는 position이 전체 board안에 속하는지
 // 만약 속한다면 1로 부터 떨어져있는 곳에 블록이 이미 자리 잡았는지 판단
-export const hasCollistion = ({ board, position, shape }: ICheckValid) => {
+export const hasCollistionWithOtherPiece = ({
+  board,
+  position,
+  shape,
+}: ICheckValid) => {
   for (let y = 0; y < shape.length; y++) {
     const row = y + position.row;
     for (let x = 0; x < shape[y].length; x++) {
-      if (shape[y][x]) {
+      if (shape[y][x] && board.rows[row]) {
         const column = x + position.column;
-        const isValidPosition = board.rows[row] && board.rows[column];
-        const isOccupied = board.rows[row][column]
-          ? board.rows[row][column].occupied
-          : undefined;
 
-        // console.log("isOccupied", isOccupied);
+        const isOccupied =
+          board.rows[row] &&
+          board.rows[row][column] &&
+          board.rows[row][column].occupied;
 
-        if (isValidPosition && isOccupied) {
+        if (isOccupied) {
           return true;
         }
       }
@@ -96,6 +98,13 @@ export const nextBoard = ({
   let rows = board.rows.map((row) =>
     row.map((cell) => (cell.occupied ? cell : { ...defaultCell }))
   );
+
+  console.log("player.collided", player.collided);
+
+  if (player.collided) {
+    resetPlayer();
+  }
+  // if()
 
   rows = transferToBoard({
     className: tetromino.className,
