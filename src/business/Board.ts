@@ -17,6 +17,56 @@ interface NextBoardProps {
   addLinesCleared: (lines: number) => void;
 }
 
+interface ICheckValid {
+  board: IBoard;
+  position: { row: number; column: number };
+  shape: number[][];
+}
+
+// shape 가장자리로 부터 1 떨어져있는 position이 전체 board안에 속하는지 판단
+export const isWithinBoard = ({ board, position, shape }: ICheckValid) => {
+  for (let y = 0; y < shape.length; y++) {
+    const row = y + position.row;
+    for (let x = 0; x < shape[y].length; x++) {
+      if (shape[y][x]) {
+        const column = x + position.column;
+        const isValidPosition = board.rows[row] && board.rows[column];
+        // console.log("row, column", `${board.rows[row]}, ${board.rows[column]}`);
+
+        if (!isValidPosition) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
+
+// shape 가장자리로 부터 1 떨어져있는 position이 전체 board안에 속하는지
+// 만약 속한다면 1로 부터 떨어져있는 곳에 블록이 이미 자리 잡았는지 판단
+export const hasCollistion = ({ board, position, shape }: ICheckValid) => {
+  for (let y = 0; y < shape.length; y++) {
+    const row = y + position.row;
+    for (let x = 0; x < shape[y].length; x++) {
+      if (shape[y][x]) {
+        const column = x + position.column;
+        const isValidPosition = board.rows[row] && board.rows[column];
+        const isOccupied = board.rows[row][column]
+          ? board.rows[row][column].occupied
+          : undefined;
+
+        // console.log("isOccupied", isOccupied);
+
+        if (isValidPosition && isOccupied) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+};
+
 export const buildBoard = ({
   rows,
   columns,
@@ -42,6 +92,7 @@ export const nextBoard = ({
   resetPlayer,
 }: NextBoardProps) => {
   const { position, tetromino } = player;
+
   let rows = board.rows.map((row) =>
     row.map((cell) => (cell.occupied ? cell : { ...defaultCell }))
   );
