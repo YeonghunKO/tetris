@@ -67,6 +67,28 @@ export const TETROMINOES = {
   },
 };
 
+// 알고리즘은 역시 그림으로 그려보는것이 제일 빠르게 이해됨
+// shape를 잡고 시계 방향으로 90도 돌린다고 생각.
+// 그럼 세로가 가로가 되면 됨. 즉, column이 row가 되어야 함.
+export const rotate = ({
+  piece,
+  direction,
+}: {
+  piece: number[][];
+  direction: number;
+}) => {
+  const newPiece = piece.map((_, index) =>
+    piece.map((column) => column[index])
+  );
+
+  console.log("newPiece", newPiece);
+  if (direction > 0) {
+    return newPiece.map((row) => row.reverse());
+  }
+
+  return newPiece.reverse();
+};
+
 export const randomTetromino = () => {
   const keys = Object.keys(TETROMINOES);
   const index = Math.floor(Math.random() * keys.length);
