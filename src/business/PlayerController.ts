@@ -1,5 +1,5 @@
 import { IBuildPlayerReturn } from "@/hooks/usePlayer";
-import { IBoard, hasCollistion, isWithinBoard } from "./Board";
+import { IBoard, hasCollistionWithOtherPiece, isWithinBoard } from "./Board";
 import { Action } from "./Input";
 import { rotate } from "./Tetrominoes";
 
@@ -14,7 +14,7 @@ interface IPlayerController {
 type IAttemptRotation = Omit<IPlayerController, "action" | "setGameOver">;
 
 type IMovePlayer = {
-  delta: { row: number; column: number };
+  direction: { row: number; column: number };
   board: IBoard;
   position: { row: number; column: number };
   shape: number[][];
@@ -29,7 +29,7 @@ const attemptRotation = ({ board, player, setPlayer }: IAttemptRotation) => {
   const position = player.position;
   const isValidRotation =
     isWithinBoard({ board, position, shape }) &&
-    !hasCollistion({
+    !hasCollistionWithOtherPiece({
       board,
       position,
       shape,
@@ -47,6 +47,7 @@ const attemptRotation = ({ board, player, setPlayer }: IAttemptRotation) => {
     return;
   }
 };
+
 const attemptMovement = ({
   action,
   board,
@@ -54,25 +55,28 @@ const attemptMovement = ({
   setGameOver,
   setPlayer,
 }: IPlayerController) => {
-  const delta = { row: 0, column: 0 };
+  // direction는 쌓이지 않는다. 1 , 0 , -1 일 뿐.
+  // 그저 방향만 알려주고 있는 것
+  const direction = { row: 0, column: 0 };
 
   let isFastDropping = false;
 
   if (action === Action.Left) {
-    delta.column -= 1;
+    direction.column -= 1;
   } else if (action === Action.Right) {
-    delta.column += 1;
+    direction.column += 1;
   } else if (action === Action.SlowDrop) {
-    delta.row += 1;
+    direction.row += 1;
   }
 
-  const movePlayer = ({ board, delta, position, shape }: IMovePlayer) => {
+  // 현재위치에서 direction만큼 움직일 수 있는지 판단. 가능하면 nextPlayerPosition을 리턴함
+  const movePlayer = ({ board, direction, position, shape }: IMovePlayer) => {
     const desiredPosition = {
-      row: position.row + delta.row,
-      column: position.column + delta.column,
+      row: position.row + direction.row,
+      column: position.column + direction.column,
     };
 
-    const collided = hasCollistion({
+    const collided = hasCollistionWithOtherPiece({
       board,
       position: desiredPosition,
       shape,
@@ -84,33 +88,35 @@ const attemptMovement = ({
       shape,
     });
 
-    console.log("collided", collided);
-    console.log("isOnBoard", isOnBoard);
-
     const isValidPosition = !collided && isOnBoard;
     const nextPlayerPosition = isValidPosition ? desiredPosition : position;
+    console.log("direction", direction);
 
-    // console.log("nextPlayerPosition", nextPlayerPosition);
+    const isMovingDown = direction.row > 0;
+    const isHit = isMovingDown && (collided || !isOnBoard);
+
+    // console.log("isOnBoard", isOnBoard);
 
     return {
-      collided,
+      collided: isHit,
       nextPlayerPosition,
+      isOnBoard,
     };
   };
 
-  const { collided, nextPlayerPosition } = movePlayer({
-    delta,
+  const { isOnBoard, collided, nextPlayerPosition } = movePlayer({
+    direction: direction,
     board,
     position: player.position,
     shape: player.tetromino.shape,
   });
 
-  const isGameOver = collided && player.position.row === 0;
+  console.log("collided", collided);
+
+  const isGameOver = isOnBoard && collided && player.position.row === 0;
   if (isGameOver) {
     setGameOver(true);
   }
-
-  console.log("player", player);
 
   setPlayer({
     ...player,
@@ -130,7 +136,6 @@ export const playerController = ({
   if (!action) {
     return;
   }
-  console.log("player in playerController", player);
 
   if (action === Action.Rotate) {
     attemptRotation({ board, player, setPlayer });
