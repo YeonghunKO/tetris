@@ -7,6 +7,7 @@ import Board from "@/components/Tetris/Board";
 import Previews from "./Previews";
 import GameStats from "@/components/Tetris/Game/Stats";
 import ArrowKeys from "./ArrowKeys/ArrowKeys";
+import Controller from "./Game/Controller";
 
 const Tetris = ({
   rows,
@@ -27,10 +28,6 @@ const Tetris = ({
     resetPlayer,
   }); // 실시간 보여지는 전체 보드의 정보를 갱신
 
-  // console.log("gaemStats", gaemStats);
-  // console.log("player", player);
-  // console.log("board", board);
-
   return (
     <div className="Tetris">
       <Board board={board} />
@@ -43,6 +40,14 @@ const Tetris = ({
           <ArrowKeys />
         </div>
       </div>
+
+      <Controller
+        setGameOver={setGameOver}
+        gameStats={gameStats}
+        player={player}
+        setPlayer={setPlayer}
+        board={board}
+      />
     </div>
   );
 };
