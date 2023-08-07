@@ -123,6 +123,28 @@ const findDropPosition = ({ board, player }: IFastDrop) => {
   return dropPosition;
 };
 
+const checkOccupiedLines = (rows: any[][]) => {
+  const defaultLine = Array.from({ length: 10 }, () => ({ ...defaultCell }));
+
+  let clearedLines = 0;
+  const clearedRows = rows.reduce((acc, row) => {
+    const isCellInLineOccupied = row.every((cell) => cell.occupied);
+
+    if (isCellInLineOccupied) {
+      acc.unshift(defaultLine);
+      clearedLines++;
+    } else {
+      acc.push(row);
+    }
+    return acc;
+  }, []);
+
+  return {
+    clearedRows,
+    clearedLines,
+  };
+};
+
 // 다음에 그려질 board를 매번 업데이트하는 함수
 export const nextBoard = ({
   addLinesCleared,
@@ -135,8 +157,6 @@ export const nextBoard = ({
   let rows = board.rows.map((row) =>
     row.map((cell) => (cell.occupied ? cell : { ...defaultCell }))
   );
-
-  console.log("board", board);
 
   const dropPos = findDropPosition({ board, player });
 
@@ -166,9 +186,19 @@ export const nextBoard = ({
     });
   }
 
-  console.log("rows", rows);
+  const { clearedRows, clearedLines } = checkOccupiedLines(rows);
+  rows = transferToBoard({
+    className: tetromino.className,
+    isOccupied: player.collided,
+    position,
+    rows: clearedRows,
+    shape: tetromino.shape,
+  });
+
+  addLinesCleared(clearedLines);
 
   if (player.collided || player.isFastDropping) {
+    // 매번 움직일때 마다. 클리어해야할 line이 있는지 확인하기
     resetPlayer();
   }
   return {

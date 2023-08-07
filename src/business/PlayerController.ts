@@ -118,7 +118,7 @@ const attemptMovement = ({
 
   // console.log("collided", collided);
 
-  const isGameOver = isOnBoard && collided && player.position.row === 0;
+  const isGameOver = collided && player.position.row === 0;
   if (isGameOver) {
     setGameOver(true);
   }
