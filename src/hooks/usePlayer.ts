@@ -16,8 +16,6 @@ export interface IBuildPlayerReturn {
 }
 
 const buildPlayer = (previous?: IBuildPlayerReturn) => {
-  console.log("previous", previous);
-
   let tetrominoes: any;
   if (previous) {
     tetrominoes = [...previous.tetrominoes];

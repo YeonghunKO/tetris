@@ -3,7 +3,7 @@ import { Action, actionForKey } from "@/business/Input";
 import { playerController } from "@/business/PlayerController";
 import { IStats } from "@/hooks/useGameStats";
 import { IBuildPlayerReturn } from "@/hooks/usePlayer";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 interface ControllerProps {
   setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,8 +21,8 @@ const Controller = ({
   setPlayer,
 }: ControllerProps) => {
   const handleInput = ({ action }: { action: string }) => {
-    console.log("action", action);
-
+    // 현재 플레이어에 대한 정보를 action에 따라서 갱신함
+    // player가 바뀌면 (shape,position,colldied,isFastDroping) Tetris.tsx에서 board도 바뀜
     playerController({
       action,
       board,
@@ -43,10 +43,6 @@ const Controller = ({
       } else {
         handleInput({ action });
       }
-
-      //   if (action === ACTION.QUIT) {
-      //     setGameOver(true);
-      //   }
     };
 
     window.addEventListener("keydown", onKeyDown);

@@ -88,7 +88,6 @@ export const rotate = ({
     piece.map((column) => column[index])
   );
 
-  console.log("newPiece", newPiece);
   if (direction > 0) {
     return newPiece.map((row) => row.reverse());
   }
@@ -104,9 +103,9 @@ export const randomTetromino = () => {
 };
 
 // 넘겨받은 rows(board) 에 shape(블록)를 새겨넣는 일
-// shape에서 1로 표시된 부분이 {occupied , className}으로 변환됨
-// 단 position = {row,column} 이 설정되어있으면 shape 에서 1로 표시된 부분이 row , column 만큼 증가하여 board에 적용
-// 즉 position 만큼 shape가 board에서 이동한다고 보면 됨.
+// shape에서 1로 표시된 부분의 index + position만큼 board에서 이동됨.
+// 그리고 board[계산된 위치.row][계산된 위치.column]의 값이 {occupied , className}으로 변환됨
+// 즉 shape안에 1로 되어있는 값이 board안에서 position 만큼 이동한다고 보면 됨.
 
 export const transferToBoard = ({
   className, // shape에서 1로 표되는 부분만 className이 지정됨

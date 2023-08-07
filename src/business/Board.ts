@@ -1,6 +1,7 @@
 import type { IBuildPlayerReturn } from "@/hooks/usePlayer";
 import { DefaultCell, defaultCell } from "./Cell";
 import { transferToBoard } from "./Tetrominoes";
+import { IPlayerController, movePlayer } from "./PlayerController";
 
 export type IBoard = {
   rows: DefaultCell[][];
@@ -22,6 +23,11 @@ interface ICheckValid {
   position: { row: number; column: number };
   shape: number[][];
 }
+
+type IFastDrop = Omit<
+  IPlayerController,
+  "action" | "setGameOver" | "setPlayer"
+>;
 
 // shape 가장자리로 부터 1 떨어져있는 position이 전체 board안에 속하는지 판단
 export const isWithinBoard = ({ board, position, shape }: ICheckValid) => {
@@ -51,7 +57,7 @@ export const hasCollistionWithOtherPiece = ({
   for (let y = 0; y < shape.length; y++) {
     const row = y + position.row;
     for (let x = 0; x < shape[y].length; x++) {
-      if (shape[y][x] && board.rows[row]) {
+      if (shape[y][x]) {
         const column = x + position.column;
 
         const isOccupied =
@@ -86,6 +92,37 @@ export const buildBoard = ({
   };
 };
 
+const findDropPosition = ({ board, player }: IFastDrop) => {
+  const {
+    position,
+    tetromino: { shape },
+  } = player;
+  const maxDroppableRowPos = board.size.rows - player.position.row;
+
+  let directionRow = 0;
+  for (let y = 0; y < maxDroppableRowPos; y++) {
+    const result = movePlayer({
+      board,
+      direction: { row: y, column: 0 },
+      position,
+      shape,
+    });
+
+    if (result.collided) {
+      break;
+    }
+
+    directionRow++;
+  }
+
+  const dropPosition = {
+    row: player.position.row + directionRow - 1,
+    column: player.position.column,
+  };
+
+  return dropPosition;
+};
+
 // 다음에 그려질 board를 매번 업데이트하는 함수
 export const nextBoard = ({
   addLinesCleared,
@@ -99,21 +136,41 @@ export const nextBoard = ({
     row.map((cell) => (cell.occupied ? cell : { ...defaultCell }))
   );
 
-  console.log("player.collided", player.collided);
+  console.log("board", board);
 
-  if (player.collided) {
-    resetPlayer();
-  }
-  // if()
+  const dropPos = findDropPosition({ board, player });
 
+  const className = `${
+    player.isFastDropping
+      ? player.tetromino.className
+      : `${player.tetromino.className} ghost`
+  }`;
+
+  // rows를 새롭게 갱신함 --> ghost와 drop되었을때 블럭을 board에 갱신
   rows = transferToBoard({
-    className: tetromino.className,
-    isOccupied: player.collided,
-    position,
+    className,
+    isOccupied: player.isFastDropping, // 왜 player.isOccupied 이어야 되는지 알아보기
+    position: dropPos,
     rows,
     shape: tetromino.shape,
   });
 
+  // 맨위에 새롭게 추가되는 블럭을 갱신
+  if (!player.isFastDropping) {
+    rows = transferToBoard({
+      className: tetromino.className,
+      isOccupied: player.collided,
+      position,
+      rows,
+      shape: tetromino.shape,
+    });
+  }
+
+  console.log("rows", rows);
+
+  if (player.collided || player.isFastDropping) {
+    resetPlayer();
+  }
   return {
     rows,
     size: { ...board.size },
