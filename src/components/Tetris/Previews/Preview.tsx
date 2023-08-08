@@ -8,7 +8,7 @@ interface IPreview {
   index: number;
 }
 
-export const Preview = ({ index, tetromino }: IPreview) => {
+export const Preview = ({ tetromino }: IPreview) => {
   const { className, shape } = tetromino;
   const board = buildBoard({ rows: 4, columns: 4 });
 
@@ -23,7 +23,7 @@ export const Preview = ({ index, tetromino }: IPreview) => {
   return (
     <div className="Preview">
       <div className="Preview-board">
-        {board.rows.map((row, y) =>
+        {board.rows.map((row) =>
           row.map((cell, x) => (
             <BoardCell key={x * board.size.columns + x} cell={cell} />
           ))
