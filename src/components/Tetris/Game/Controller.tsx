@@ -2,6 +2,7 @@ import { IBoard } from "@/business/Board";
 import { Action, actionForKey } from "@/business/Input";
 import { playerController } from "@/business/PlayerController";
 import { IStats } from "@/hooks/useGameStats";
+import { useInterval } from "@/hooks/useInterval";
 import { IBuildPlayerReturn } from "@/hooks/usePlayer";
 import { useEffect } from "react";
 
@@ -31,6 +32,10 @@ const Controller = ({
       setGameOver,
     });
   };
+
+  useInterval({
+    callback: () => handleInput({ action: Action.SlowDrop }),
+  });
 
   useEffect(() => {
     const onKeyDown = (evt: KeyboardEvent) => {
