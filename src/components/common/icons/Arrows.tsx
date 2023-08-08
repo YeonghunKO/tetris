@@ -1,7 +1,9 @@
 const Arrows = ({
   direction,
+  onClick,
 }: {
   direction: "right" | "left" | "down" | "up";
+  onClick: () => void;
 }) => {
   const directions = {
     right: (
@@ -46,6 +48,10 @@ const Arrows = ({
       </svg>
     ),
   };
-  return <div className={`Arrow ${direction}`}>{directions[direction]}</div>;
+  return (
+    <div onClick={onClick} className={`Arrow ${direction}`}>
+      {directions[direction]}
+    </div>
+  );
 };
 export default Arrows;

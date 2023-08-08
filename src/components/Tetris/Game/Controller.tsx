@@ -1,10 +1,13 @@
 import { IBoard } from "@/business/Board";
 import { Action, actionForKey } from "@/business/Input";
 import { playerController } from "@/business/PlayerController";
+import Arrows from "@/components/common/icons/Arrows";
 import { IStats } from "@/hooks/useGameStats";
 import { useInterval } from "@/hooks/useInterval";
 import { IBuildPlayerReturn } from "@/hooks/usePlayer";
 import { useEffect } from "react";
+
+import "./ArrowKeys.css";
 
 interface ControllerProps {
   setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -56,7 +59,40 @@ const Controller = ({
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [handleInput]);
-  return <></>;
+
+  const handleArrowUp = () => {
+    handleInput({ action: Action.Rotate });
+  };
+
+  const handleArrowDown = () => {
+    handleInput({ action: Action.SlowDrop });
+  };
+
+  const handleArrowRight = () => {
+    handleInput({ action: Action.Right });
+  };
+
+  const handleArrowLeft = () => {
+    handleInput({ action: Action.Left });
+  };
+
+  const handleSpaceBar = () => {
+    handleInput({ action: Action.FastDrop });
+  };
+
+  return (
+    <>
+      <button className="space-bar" onClick={handleSpaceBar}>
+        space bar
+      </button>
+      <div className="Arrows">
+        <Arrows onClick={handleArrowUp} direction="up" />
+        <Arrows onClick={handleArrowDown} direction="down" />
+        <Arrows onClick={handleArrowRight} direction="right" />
+        <Arrows onClick={handleArrowLeft} direction="left" />
+      </div>
+    </>
+  );
 };
 
 export default Controller;

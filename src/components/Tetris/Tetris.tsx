@@ -6,7 +6,6 @@ import { useBoard } from "@/hooks/useBoard";
 import Board from "@/components/Tetris/Board";
 import Previews from "./Previews";
 import GameStats from "@/components/Tetris/Game/Stats";
-import ArrowKeys from "./ArrowKeys/ArrowKeys";
 import Controller from "./Game/Controller";
 
 const Tetris = ({
@@ -37,17 +36,15 @@ const Tetris = ({
           <GameStats gameStats={gameStats} />
         </div>
         <div>
-          <ArrowKeys />
+          <Controller
+            setGameOver={setGameOver}
+            gameStats={gameStats}
+            player={player}
+            setPlayer={setPlayer}
+            board={board}
+          />
         </div>
       </div>
-
-      <Controller
-        setGameOver={setGameOver}
-        gameStats={gameStats}
-        player={player}
-        setPlayer={setPlayer}
-        board={board}
-      />
     </div>
   );
 };
