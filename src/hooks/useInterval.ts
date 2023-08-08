@@ -5,7 +5,7 @@ interface IUseInterval {
   delay?: number | null;
 }
 
-export const useInterval = ({ callback, delay = 1000 }: IUseInterval) => {
+export const useInterval = ({ callback, delay = 800 }: IUseInterval) => {
   const savedCallback = useRef(() => {});
 
   useEffect(() => {
