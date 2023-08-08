@@ -109,14 +109,12 @@ const attemptMovement = ({
 
   // 현재위치에서 direction만큼 움직일 수 있는지 판단. 가능하면 nextPlayerPosition을 리턴함
 
-  const { isOnBoard, collided, nextPlayerPosition } = movePlayer({
+  const { collided, nextPlayerPosition } = movePlayer({
     direction: direction,
     board,
     position: player.position,
     shape: player.tetromino.shape,
   });
-
-  // console.log("collided", collided);
 
   const isGameOver = collided && player.position.row === 0;
   if (isGameOver) {

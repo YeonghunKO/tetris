@@ -8,6 +8,7 @@ import { IBuildPlayerReturn } from "@/hooks/usePlayer";
 import { useEffect } from "react";
 
 import "./ArrowKeys.css";
+import { useDropTime } from "@/hooks/useDropTime";
 
 interface ControllerProps {
   setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,8 +37,11 @@ const Controller = ({
     });
   };
 
+  const [dropTime] = useDropTime({ gameStats });
+
   useInterval({
     callback: () => handleInput({ action: Action.SlowDrop }),
+    delay: dropTime,
   });
 
   useEffect(() => {
@@ -45,7 +49,6 @@ const Controller = ({
       const action = actionForKey(evt.code as any);
 
       if (action === Action.Pause) {
-        console.log("pause");
       } else if (action === Action.Quit) {
         setGameOver(true);
       } else {
