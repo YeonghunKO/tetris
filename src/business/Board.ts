@@ -124,7 +124,9 @@ const findDropPosition = ({ board, player }: IFastDrop) => {
 };
 
 const checkOccupiedLines = (rows: any[][]) => {
-  const defaultLine = Array.from({ length: 10 }, () => ({ ...defaultCell }));
+  const defaultLine = Array.from({ length: rows[0].length }, () => ({
+    ...defaultCell,
+  }));
 
   let clearedLines = 0;
   const clearedRows = rows.reduce((acc, row) => {
