@@ -1,6 +1,8 @@
 import { useGameOver } from "@/hooks/useGameOver";
-import Menu from "@/components/Tetris/Menu";
-import Tetris from "../Tetris";
+import { Suspense, lazy } from "react";
+
+const Menu = lazy(() => import("../Menu/Menu.js"));
+const Tetris = lazy(() => import("../Tetris.js"));
 
 export const Game = ({ rows, columns }: { rows: number; columns: number }) => {
   const [gameOver, setGameOver, resetGameOver] = useGameOver();
@@ -9,11 +11,13 @@ export const Game = ({ rows, columns }: { rows: number; columns: number }) => {
 
   return (
     <div className="Game">
-      {gameOver ? (
-        <Menu onClick={start} />
-      ) : (
-        <Tetris rows={rows} columns={columns} setGameOver={setGameOver} />
-      )}
+      <Suspense fallback={<div>...loading</div>}>
+        {gameOver ? (
+          <Menu onClick={start} />
+        ) : (
+          <Tetris rows={rows} columns={columns} setGameOver={setGameOver} />
+        )}
+      </Suspense>
     </div>
   );
 };
